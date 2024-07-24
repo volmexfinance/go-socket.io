@@ -25,7 +25,7 @@ func main() {
 		var indicesMessage struct {
 			Symbol    string  `json:"symbol"`
 			Price     float64 `json:"price"`
-			Timestamp float64 `json:"timestamp"`
+			Timestamp int64   `json:"timestamp"`
 		}
 		err := json.Unmarshal(msg, &indicesMessage)
 		if err != nil {
