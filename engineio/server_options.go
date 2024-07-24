@@ -1,9 +1,10 @@
 package engineio
 
 import (
-	"github.com/googollee/go-socket.io/engineio/session"
 	"net/http"
 	"time"
+
+	"github.com/googollee/go-socket.io/engineio/session"
 
 	"github.com/googollee/go-socket.io/engineio/transport"
 	"github.com/googollee/go-socket.io/engineio/transport/polling"
@@ -20,6 +21,7 @@ type Options struct {
 
 	RequestChecker CheckerFunc
 	ConnInitor     ConnInitorFunc
+	JwtToken       string
 }
 
 func (c *Options) getRequestChecker() CheckerFunc {
@@ -72,3 +74,10 @@ func defaultChecker(*http.Request) (http.Header, error) {
 }
 
 func defaultInitor(*http.Request, Conn) {}
+
+func (c *Options) GetJwtToken() string {
+	if c != nil && c.JwtToken != "" {
+		return c.JwtToken
+	}
+	return ""
+}

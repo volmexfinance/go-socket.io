@@ -9,6 +9,7 @@ import (
 	"github.com/googollee/go-socket.io/engineio"
 	"github.com/googollee/go-socket.io/engineio/transport"
 	"github.com/googollee/go-socket.io/engineio/transport/polling"
+	"github.com/googollee/go-socket.io/engineio/transport/websocket"
 	"github.com/googollee/go-socket.io/logger"
 	"github.com/googollee/go-socket.io/parser"
 )
@@ -72,7 +73,15 @@ func (c *Client) Connect() error {
 		dialer.Transports = c.opts.Transports
 	}
 
-	enginioCon, err := dialer.Dial(c.url, nil)
+	u, err := url.Parse(c.url)
+	if err != nil {
+		logger.Error("parse url str:", err)
+		return err
+	}
+	query := u.Query()
+	query.Set("jwtToken", c.opts.JwtToken)
+	u.RawQuery = query.Encode()
+	enginioCon, err := dialer.Dial(u.String(), nil)
 	if err != nil {
 		return err
 	}
