@@ -5,10 +5,10 @@ import (
 	"log"
 	"time"
 
-	socketio "github.com/googollee/go-socket.io"
-	"github.com/googollee/go-socket.io/engineio"
-	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/websocket"
+	socketio "github.com/volmexfinance/go-socket.io"
+	"github.com/volmexfinance/go-socket.io/engineio"
+	"github.com/volmexfinance/go-socket.io/engineio/transport"
+	"github.com/volmexfinance/go-socket.io/engineio/transport/websocket"
 )
 
 func main() {

@@ -6,12 +6,12 @@ import (
 	"path"
 	"strings"
 
-	"github.com/googollee/go-socket.io/engineio"
-	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/polling"
-	"github.com/googollee/go-socket.io/engineio/transport/websocket"
-	"github.com/googollee/go-socket.io/logger"
-	"github.com/googollee/go-socket.io/parser"
+	"github.com/volmexfinance/go-socket.io/engineio"
+	"github.com/volmexfinance/go-socket.io/engineio/transport"
+	"github.com/volmexfinance/go-socket.io/engineio/transport/polling"
+	"github.com/volmexfinance/go-socket.io/engineio/transport/websocket"
+	"github.com/volmexfinance/go-socket.io/logger"
+	"github.com/volmexfinance/go-socket.io/parser"
 )
 
 var EmptyAddrErr = errors.New("empty addr")

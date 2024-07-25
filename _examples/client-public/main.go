@@ -5,10 +5,10 @@ import (
 	"log"
 	"time"
 
-	socketio "github.com/googollee/go-socket.io"
-	"github.com/googollee/go-socket.io/engineio"
-	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/websocket"
+	socketio "github.com/volmexfinance/go-socket.io"
+	"github.com/volmexfinance/go-socket.io/engineio"
+	"github.com/volmexfinance/go-socket.io/engineio/transport"
+	"github.com/volmexfinance/go-socket.io/engineio/transport/websocket"
 )
 
 func main() {
@@ -51,7 +51,12 @@ func main() {
 		return nil
 	})
 
-	time.Sleep(1000 * time.Second)
+	client.OnError(func(s socketio.Conn, e error) {
+		log.Printf("Error client: %v", e)
+		client.Connect()
+	})
+
+	time.Sleep(10000 * time.Second)
 	err = client.Close()
 	if err != nil {
 		panic(err)
