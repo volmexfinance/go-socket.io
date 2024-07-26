@@ -1,10 +1,10 @@
 # go-socket.io
 
+This repo is a fork of the [repo](https://github.com/xuzuxing/go-socket.io/) which fully supports the integration of Volmex websocket endpoints. See more information [here](https://docs.volmex.finance/index-data-api#websockets).
+
 go-socket.io is library an implementation of [Socket.IO](http://socket.io) in Golang, which is a realtime application framework.
 
 Current this library supports 1.4 version of the Socket.IO client. It supports room, namespaces and broadcast at now.
-
-**Help wanted** This project is looking for contributors to help fix bugs and implement new features. Please check [Issue 192](https://github.com/volmexfinance/go-socket.io/issues/192). All help is much appreciated.
 
 ## Badges
 
@@ -18,9 +18,6 @@ Current this library supports 1.4 version of the Socket.IO client. It supports r
 
 - [Install](#install)
 - [Example](#example)
-- [FAQ](#faq)
-- [Engine.io](#engineio)
-- [Community](#community)
 - [License](#license)
 
 ## Install
@@ -43,24 +40,65 @@ and use `socketio` as the package name inside the code.
 
 Please check more examples into folder in project for details. [Examples](https://github.com/volmexfinance/go-socket.io/tree/master/_examples)
 
-## FAQ
+```
+package main
 
-It is some popular questions about this repository: 
+import (
+	"context"
+	"fmt"
 
-- Is this library supported socket.io version 2?
-    - No, but if you wanna you can help to do it. Join us in community chat Telegram   
-- How to use go-socket.io with CORS?
-    - Please see examples in [directory](https://github.com/volmexfinance/go-socket.io/tree/master/_examples)
+	socketio "github.com/volmexfinance/go-socket.io"
+	"github.com/volmexfinance/go-socket.io/engineio"
+)
 
-## Community
+type DataPoint struct {
+	Symbol    string
+	Price     float64
+	Timestamp int64
+}
 
-Telegram chat: [@go_socketio](https://t.me/go_socketio)
+func main() {
 
-## Engineio
+	ctx := context.Background()
 
-This project contains a sub-package called `engineio`. This used to be a separate package under https://github.com/volmexfinance/go-engine.io.
+	dataPointsChannel := make(chan *DataPoint)
 
-It contains the `engine.io` analog implementation of the original node-package. https://github.com/socketio/engine.io It can be used without the socket.io-implementation. Please check the README.md in `engineio/`.
+	client, err := socketio.NewClient("ws://ws.volmex.finance", &engineio.Options{})
+	if err != nil {
+		return
+	}
+
+	client.OnConnect(func(c socketio.Conn) error {
+
+		fmt.Println("Connected")
+
+		client.Emit("fetch-indices-messages")
+
+		client.OnEvent("indices-messages-stream", func(s socketio.Conn, msg DataPoint) {
+			dataPointsChannel <- &msg
+
+		})
+
+		return nil
+	})
+
+	err = client.Connect()
+	if err != nil {
+		return
+	}
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case dataPoint := <-dataPointsChannel:
+			fmt.Printf("Received data point %s - %f - %d\n", dataPoint.Symbol, dataPoint.Price, dataPoint.Timestamp)
+		}
+	}
+
+}
+```
+
 
 ## License
 
