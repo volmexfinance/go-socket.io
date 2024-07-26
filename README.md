@@ -42,7 +42,7 @@ Please check more examples into folder in project for details. [Examples](https:
 
  - [Public Websocket Example](./_examples/client-public/main.go)
  - [Private Websocket Example](./_examples/client-private/main.go)
-	- Note: You will need to get credentials to get a jwtToken for access. [https://docs.volmex.finance/index-data-api#private-websockets-realtime-data](https://docs.volmex.finance/index-data-api#private-websockets-realtime-data)
+	- Note: You will need to get credentials to get a jwtToken for access. [https://docs.volmex.finance/index-data-api#websockets](https://docs.volmex.finance/index-data-api#websockets)
 ```
 package main
 
